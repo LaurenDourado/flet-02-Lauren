@@ -1,4 +1,6 @@
-# Calculadora de IMC — Projeto Acadêmico com Flet (Mobile/Desktop)
+<img width="912" height="260" alt="image" src="https://github.com/user-attachments/assets/3a528713-e728-456d-98aa-b2cd17b5dacb" />
+
+# Calculadora de IMC — Projeto Acadêmico com Flet
 
 Este projeto é uma **Calculadora de IMC** desenvolvida em **Python** utilizando o framework **Flet**, como parte de um **trabalho acadêmico**. A aplicação foi criada com foco em aprendizado prático, trazendo recursos visuais modernos, facilidade de uso e funções adicionais como **modo escuro** e **histórico de cálculos**.
 
