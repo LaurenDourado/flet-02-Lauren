@@ -27,7 +27,9 @@ Além de servir como exemplo prático para **aprendizado em programação mobile
 * Instalar a biblioteca principal:
 
 ```bash
-pip install flet
+python -m venv .venv
+.venv\Scripts\activate
+pip install flet-desktop
 ```
 
 ### 2. Estrutura inicial do app
