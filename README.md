@@ -119,3 +119,98 @@ flet run --web imc.py
 Este projeto acadêmico mostra como é possível criar um **aplicativo completo em Python** usando **Flet**, explorando desde a interface gráfica até funcionalidades extras como **modo escuro** e **histórico**. Ele serve tanto como exemplo prático de programação quanto como ferramenta útil para cálculos de saúde.
 
 Ao final, você terá uma calculadora de IMC funcional, bonita e responsiva — pronta para uso, apresentação acadêmica e futuras melhorias. 🚀
+
+# Segunda parte do projeto 
+### *Testes de Software (Explorando Testes de Software em Projetos de Desenvolvimento)*
+
+🧪 Tipos de Testes no seu código
+- 1️⃣ Testes Unitários
+
+👉 O que são:
+Testam funções pequenas e isoladas, verificando se a lógica matemática funciona corretamente.
+
+👉 No seu código:
+A parte que calcula o IMC e a faixa de peso ideal.
+
+📄 Exemplo (tests/test_unit.py):
+
+```
+import sys, os, pytest
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from imc_logic import calcular_imc, faixa_peso_ideal
+
+def test_calculo_imc_normal():
+    imc, classificacao = calcular_imc(70, 1.75)
+    assert round(imc, 2) == 22.86
+    assert classificacao == "Peso normal"
+
+def test_faixa_peso_ideal():
+    min_p, max_p = faixa_peso_ideal(1.75)
+    assert min_p == pytest.approx(56.6, rel=1e-2)
+    assert max_p == pytest.approx(76.2, rel=1e-2)
+```
+🔎 Aqui só testamos a matemática, sem abrir interface.
+
+- Testes de Integração
+👉 O que são:
+Verificam se várias funções trabalham juntas corretamente.
+
+👉 No seu código:
+Testar se o cálculo do IMC (função calcular_imc) funciona em conjunto com a faixa de peso ideal (faixa_peso_ideal).
+
+📄 Exemplo (tests/test_integration.py):
+
+```
+from imc_logic import calcular_imc, faixa_peso_ideal
+
+def test_integration_imc_and_faixa():
+    imc, classificacao = calcular_imc(80, 1.80)
+    faixa = faixa_peso_ideal(1.80)
+
+    assert round(imc, 2) == 24.69
+    assert classificacao == "Peso normal"
+    assert faixa == pytest.approx((59.9, 80.6), rel=1e-2)
+```
+- 3️⃣ Testes de Sistema
+👉 O que são:
+Testam o fluxo completo do sistema, como se fosse um usuário usando.
+
+👉 No seu código:
+Simular alguém digitando peso e altura, clicando em calcular e vendo o resultado + histórico.
+
+📄 Exemplo (tests/test_system.py):
+```
+from imc_logic import calcular_imc, faixa_peso_ideal
+
+def test_system_flow():
+    # Usuário entra com dados
+    peso, altura = 90, 1.75
+    imc, classificacao = calcular_imc(peso, altura)
+    faixa = faixa_peso_ideal(altura)
+
+    # Esperado pelo sistema
+    assert round(imc, 2) == 29.39
+    assert classificacao == "Sobrepeso"
+    assert faixa == pytest.approx((56.6, 76.2), rel=1e-2)
+```
+
+- 👉 O que são:
+Validam os critérios do cliente/usuário final (ex.: “com 70kg e 1.75m deve dar Peso normal”).
+
+👉 No seu código:
+Critério: um adulto de 70kg e 1.75m deve ter IMC ≈ 22.86 → “Peso normal”.
+
+📄 Exemplo (tests/test_acceptance.py):
+```
+from imc_logic import calcular_imc, faixa_peso_ideal
+import pytest
+
+def test_acceptance_normal_case():
+    imc, classificacao = calcular_imc(70, 1.75)
+    faixa = faixa_peso_ideal(1.75)
+
+    assert round(imc, 2) == 22.86
+    assert classificacao == "Peso normal"
+    assert faixa == pytest.approx((56.6, 76.2), rel=1e-2)
+```
