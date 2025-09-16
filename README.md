@@ -129,7 +129,7 @@ Ao final, você terá uma calculadora de IMC funcional, bonita e responsiva — 
 👉 O que são:
 Testam funções pequenas e isoladas, verificando se a lógica matemática funciona corretamente.
 
-👉 No seu código:
+👉 No meu código:
 A parte que calcula o IMC e a faixa de peso ideal.
 
 📄 Exemplo (tests/test_unit.py):
@@ -152,11 +152,12 @@ def test_faixa_peso_ideal():
 ```
 🔎 Aqui só testamos a matemática, sem abrir interface.
 
-- Testes de Integração
+- 2️⃣ Testes de Integração
+  
 👉 O que são:
 Verificam se várias funções trabalham juntas corretamente.
 
-👉 No seu código:
+👉 No meu código:
 Testar se o cálculo do IMC (função calcular_imc) funciona em conjunto com a faixa de peso ideal (faixa_peso_ideal).
 
 📄 Exemplo (tests/test_integration.py):
@@ -172,11 +173,13 @@ def test_integration_imc_and_faixa():
     assert classificacao == "Peso normal"
     assert faixa == pytest.approx((59.9, 80.6), rel=1e-2)
 ```
+
 - 3️⃣ Testes de Sistema
+- 
 👉 O que são:
 Testam o fluxo completo do sistema, como se fosse um usuário usando.
 
-👉 No seu código:
+👉 No meu código:
 Simular alguém digitando peso e altura, clicando em calcular e vendo o resultado + histórico.
 
 📄 Exemplo (tests/test_system.py):
@@ -195,10 +198,12 @@ def test_system_flow():
     assert faixa == pytest.approx((56.6, 76.2), rel=1e-2)
 ```
 
-- 👉 O que são:
+- 4️⃣ Testes de Aceitação
+  
+👉 O que são:
 Validam os critérios do cliente/usuário final (ex.: “com 70kg e 1.75m deve dar Peso normal”).
 
-👉 No seu código:
+👉 No meu código:
 Critério: um adulto de 70kg e 1.75m deve ter IMC ≈ 22.86 → “Peso normal”.
 
 📄 Exemplo (tests/test_acceptance.py):
@@ -214,3 +219,56 @@ def test_acceptance_normal_case():
     assert classificacao == "Peso normal"
     assert faixa == pytest.approx((56.6, 76.2), rel=1e-2)
 ```
+
+- 5️⃣ Testes Funcionais
+  
+👉 O que são:
+Testam o que o sistema deve fazer (função esperada).
+
+👉 No meu código:
+Garantir que pesos abaixo de 18.5 sempre retornam “Abaixo do peso”.
+
+📄 Exemplo (tests/test_functional.py):
+```
+from imc_logic import calcular_imc
+
+def test_functional_underweight():
+    imc, classificacao = calcular_imc(45, 1.75)
+    assert round(imc, 2) < 18.5
+    assert classificacao == "Abaixo do peso"
+```
+
+- 6️⃣ Testes Não Funcionais
+
+👉 O que são:
+Avaliam desempenho, segurança, usabilidade.
+
+👉 No meu código:
+Podemos medir se o cálculo roda rápido, sem travar a interface.
+
+📄 Exemplo (tests/test_nonfunctional.py):
+```
+import time
+from imc_logic import calcular_imc
+
+def test_nonfunctional_performance():
+    start = time.time()
+    for _ in range(100000):
+        calcular_imc(70, 1.75)
+    end = time.time()
+    assert (end - start) < 1.0  # deve rodar em menos de 1 segundo
+```
+
+- 👉 Resumindo:
+
+Unitário → testa uma função isolada (calcular_imc).
+
+Integração → testa duas funções juntas (calcular_imc + faixa_peso_ideal).
+
+Sistema → simula o fluxo completo.
+
+Aceitação → valida o critério do cliente (IMC correto para caso real).
+
+Funcional → verifica se as funções cumprem os requisitos (“peso < 18.5 → abaixo do peso”).
+
+Não funcional → avalia desempenho (velocidade).
